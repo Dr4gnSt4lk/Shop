@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_Слой_2" data-name="Слой 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300.26 303.32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#_Безымянный_градиент_26);
+      }
+
+      .cls-2 {
+        fill: #5b4024;
+      }
+
+      .cls-3 {
+        fill: #c69866;
+      }
+    </style>
+    <linearGradient id="_Безымянный_градиент_26" data-name="Безымянный градиент 26" x1="148.24" y1="295.16" x2="148.24" y2="140.13" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5b3624"/>
+      <stop offset=".18" stop-color="#653f2a" stop-opacity=".91"/>
+      <stop offset=".47" stop-color="#80583b" stop-opacity=".65"/>
+      <stop offset=".83" stop-color="#ad8156" stop-opacity=".23"/>
+      <stop offset="1" stop-color="#c69866" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <ellipse class="cls-3" cx="148.23" cy="153.63" rx="140" ry="141.5"/>
+  <path class="cls-1" d="M8.91,140.13l278.91,7.79,.4,4.45c-7.83,201.87-292.49,181.43-279.55-9.21l.23-3.02Z"/>
+  <path class="cls-2" d="M39.13,242.29C119.2,111.44,199.21,46.64,280.64,107.63l.83,2.54c-91.53-55.23-166.51,30.06-239.91,135.16l-2.43-3.04Z"/>
+  <path class="cls-2" d="M36.1,69.1c99.06-18.38,168.37,116.71,113.73,225.99l2.19-.09c52.6-85.28,10.11-244.45-113.98-228.62l-1.95,2.71Z"/>
+  <path class="cls-2" d="M173.68,14.57c-9.81,78.23,36.88,129.7,111.67,167.68l-.54,2.59c-70.42-30.67-121.43-74.97-112.48-170.47l1.36,.21Z"/>
+  <path class="cls-2" d="M87.11,26.47c62.61,34.24,107.5,118.63,140.51,243.4l1.09-1.02C194.33,130.51,148.66,50.4,88.38,25.7l-1.28,.77Z"/>
+</svg>
