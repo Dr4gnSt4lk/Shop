@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/sql_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,6 +55,7 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _journals = [];
   bool _isLoading = true;
   bool _searchBoolean = false;
+  bool _bigCard = false;
 
   void _refreshJournals() async {
     final data = await SQLHelper.getItems();
@@ -269,190 +271,253 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF2FFEB),
-      appBar: AppBar(
-          backgroundColor: const Color(0xFFA7CF9B),
-          title: !_searchBoolean
-              ? Text(
-                  'Медведи',
-                  style: TextStyle(color: Color(0xFAFAFAFF)),
-                )
-              : TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                      hintText: "Поиск...",
-                      hintStyle: TextStyle(color: Color(0xFAFAFAFF)),
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFAFAFAFF))),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFAFAFAFF)))),
-                  onChanged: (text) async {
-                    await _search(text);
-                  },
-                ),
-          centerTitle: true,
-          leading: IconButton(
-              onPressed: () => {},
-              icon: Transform.flip(
-                  flipX: true,
-                  child: SvgPicture.asset(
-                    'icons/Marker.svg',
-                    color: const Color(0xFAFAFAFF),
-                    height: 30,
-                  ))),
-          actions: !_searchBoolean
-              ? [
-                  IconButton(
-                      iconSize: 30,
-                      icon: Icon(
-                        Icons.search,
-                        color: Color(0xFAFAFAFF),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _searchBoolean = true;
-                        });
-                      })
-                ]
-              : [
-                  IconButton(
-                      icon: Icon(
-                        Icons.clear,
-                        color: Color(0xFAFAFAFF),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _searchBoolean = false;
-                          searchController.clear();
-                          _refreshJournals();
-                        });
-                      })
-                ]),
-      body: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, childAspectRatio: 0.64),
-          shrinkWrap: true,
-          itemCount: _journals.length,
-          itemBuilder: (context, index) => Container(
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: const Color(0xFFA7CF9B),
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(9, 7, 9, 2),
-                    child: Container(
-                        height: 145,
-                        width: 175,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                color: const Color(0xFF567B59), width: 3),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: _journals[index]['image'] != null
-                            ? Image.memory(
-                                _journals[index]['image'],
-                                fit: BoxFit.fitHeight,
-                              )
-                            : Container()),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(9, 1, 9, 25),
-                      child: Text(_journals[index]['title'],
-                          style:
-                              TextStyle(fontSize: 16, color: Color(0xFAFAFAFF)),
-                          textAlign: TextAlign.center)),
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(11, 0, 11, 0),
-                      child: Container(
+      body: CustomScrollView(
+        slivers: [
+          /*SliverAppBar(
+              backgroundColor: const Color(0xFFA7CF9B),
+              title: !_searchBoolean
+                  ? Text(
+                      'Медведи',
+                      style: TextStyle(color: Color(0xFAFAFAFF)),
+                    )
+                  : TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                          hintText: "Поиск...",
+                          hintStyle: TextStyle(color: Color(0xFAFAFAFF)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFAFAFAFF))),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Color(0xFAFAFAFF)))),
+                      onChanged: (text) async {
+                        await _search(text);
+                      },
+                    ),
+              centerTitle: true,
+              leading: IconButton(
+                  onPressed: () => {},
+                  icon: Transform.flip(
+                      flipX: true,
+                      child: SvgPicture.asset(
+                        'icons/Marker.svg',
+                        color: const Color(0xFAFAFAFF),
                         height: 30,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color(0xFF567B59), width: 2)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(left: 4, right: 10),
-                              child: Row(children: <Widget>[
-                                SvgPicture.asset('icons/Rating.svg',
-                                    width: 30, height: 25),
-                                SvgPicture.asset('icons/Rating.svg',
-                                    width: 30, height: 25),
-                                SvgPicture.asset('icons/Rating.svg',
-                                    width: 30, height: 25),
-                                SvgPicture.asset('icons/Rating.svg',
-                                    width: 30, height: 25),
-                                SvgPicture.asset('icons/Rating.svg',
-                                    width: 30, height: 25)
-                              ]),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(right: 15),
-                              child: Text(
-                                _journals[index]['rating'].round().toString(),
-                                style: TextStyle(
-                                    fontSize: 15, color: Color(0xFAFAFAFF)),
-                              ),
-                            )
-                          ],
-                        ),
-                      )),
-                  Container(
-                      margin: EdgeInsets.only(left: 10, right: 10, top: 8),
-                      height: 53,
-                      decoration: BoxDecoration(
-                          color: const Color(0xFFF2FFEB),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                  Container(
-                                      padding: EdgeInsets.only(left: 7, top: 3),
-                                      child: FittedBox(
-                                          fit: BoxFit.fitWidth,
-                                          child: Text(
-                                            _journals[index]['price']
-                                                    .toString() +
-                                                '₽',
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFF567B59)),
-                                          ))),
-                                  Container(
-                                    padding: EdgeInsets.only(left: 6),
-                                    child: FittedBox(
-                                      fit: BoxFit.fitWidth,
-                                      child: Text(
-                                          'От ' +
-                                              (_journals[index]['price'] / 12)
-                                                  .round()
-                                                  .toString() +
-                                              '₽/ в мес.',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xFF567B59))),
-                                    ),
-                                  )
-                                ])),
-                            Container(
-                                child: IconButton(
-                                    iconSize: 30,
-                                    icon: Icon(
-                                      Icons.info,
-                                      color: Color(0xFFA7CF9B),
-                                    ),
-                                    onPressed: () {}))
-                          ]))
-                ],
+                      ))),
+              actions: !_searchBoolean
+                  ? [
+                      IconButton(
+                          iconSize: 30,
+                          icon: Icon(
+                            Icons.search,
+                            color: Color(0xFAFAFAFF),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _searchBoolean = true;
+                            });
+                          })
+                    ]
+                  : [
+                      IconButton(
+                          icon: Icon(
+                            Icons.clear,
+                            color: Color(0xFAFAFAFF),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _searchBoolean = false;
+                              searchController.clear();
+                              _refreshJournals();
+                            });
+                          })
+                    ]),*/
+          SliverPersistentHeader(
+              floating: true,
+              delegate: _SliverAppBarDelegate(SizedBox(
+                height: 80,
+                child: Container(
+                    color: Color(0xFFF2FFEB),
+                    child: Center(
+                        child: ToggleSwitch(
+                      minWidth: 50,
+                      minHeight: 50,
+                      initialLabelIndex: 0,
+                      cornerRadius: 20,
+                      activeFgColor: Colors.white,
+                      inactiveBgColor: Colors.grey,
+                      inactiveFgColor: Colors.white,
+                      totalSwitches: 2,
+                      icons: [Icons.check, Icons.cancel],
+                      iconSize: 30,
+                      onToggle: (index) {
+                        if (index == 0)
+                          _bigCard = false;
+                        else
+                          _bigCard = true;
+                        print('bigCard: $_bigCard');
+                        _refreshJournals();
+                      },
+                    ))),
               ))),
+          !_bigCard
+              ? SliverGrid.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, childAspectRatio: 0.64),
+                  itemCount: _journals.length,
+                  itemBuilder: (context, index) => InkWell(
+                      onTap: () {},
+                      child: Container(
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color(0xFFA7CF9B),
+                          ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(9, 7, 9, 2),
+                                child: Container(
+                                    height: 145,
+                                    width: 175,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: const Color(0xFF567B59),
+                                            width: 3),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: _journals[index]['image'] != null
+                                        ? Image.memory(
+                                            _journals[index]['image'],
+                                            fit: BoxFit.fitHeight,
+                                          )
+                                        : Container()),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(9, 1, 9, 25),
+                                  child: Text(_journals[index]['title'],
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color(0xFAFAFAFF)),
+                                      textAlign: TextAlign.center)),
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(11, 0, 11, 0),
+                                  child: Container(
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: const Color(0xFF567B59),
+                                            width: 2)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 4, right: 10),
+                                          child: Row(children: <Widget>[
+                                            SvgPicture.asset('icons/Rating.svg',
+                                                width: 30, height: 25),
+                                            SvgPicture.asset('icons/Rating.svg',
+                                                width: 30, height: 25),
+                                            SvgPicture.asset('icons/Rating.svg',
+                                                width: 30, height: 25),
+                                            SvgPicture.asset('icons/Rating.svg',
+                                                width: 30, height: 25),
+                                            SvgPicture.asset('icons/Rating.svg',
+                                                width: 30, height: 25)
+                                          ]),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(right: 15),
+                                          child: Text(
+                                            _journals[index]['rating']
+                                                .round()
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Color(0xFAFAFAFF)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )),
+                              Container(
+                                  margin: EdgeInsets.only(
+                                      left: 10, right: 10, top: 8),
+                                  height: 53,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFF2FFEB),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Flexible(
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                              Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 7, top: 3),
+                                                  child: FittedBox(
+                                                      fit: BoxFit.fitWidth,
+                                                      child: Text(
+                                                        _journals[index]
+                                                                    ['price']
+                                                                .toString() +
+                                                            '₽',
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Color(
+                                                                0xFF567B59)),
+                                                      ))),
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.only(left: 6),
+                                                child: FittedBox(
+                                                  fit: BoxFit.fitWidth,
+                                                  child: Text(
+                                                      'От ' +
+                                                          (_journals[index][
+                                                                      'price'] /
+                                                                  12)
+                                                              .round()
+                                                              .toString() +
+                                                          '₽/ в мес.',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Color(
+                                                              0xFF567B59))),
+                                                ),
+                                              )
+                                            ])),
+                                        Container(
+                                            child: IconButton(
+                                                iconSize: 30,
+                                                icon: Icon(
+                                                  Icons.info,
+                                                  color: Color(0xFFA7CF9B),
+                                                ),
+                                                onPressed: () {}))
+                                      ]))
+                            ],
+                          ))),
+                )
+              : SliverList.builder(
+                  itemCount: 30,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      leading: Icon(Icons.list),
+                      title: Text('Item ${index + 1}'),
+                    );
+                  })
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFFA7CF9B),
         focusColor: Color(0xFF567B59),
@@ -460,5 +525,27 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => _showForm(null),
       ),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._widget);
+
+  final SizedBox _widget;
+
+  @override
+  double get minExtent => _widget.height ?? 0.0;
+  @override
+  double get maxExtent => _widget.height ?? 0.0;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return _widget;
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
   }
 }
