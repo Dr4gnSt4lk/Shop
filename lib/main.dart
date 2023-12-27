@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage> {
   bool _isLoading = true;
   bool _searchBoolean = false;
   bool _bigCard = false;
+  int toggle_bigCard = 0;
 
   void _refreshJournals() async {
     final data = await SQLHelper.getItems();
@@ -273,93 +274,102 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Color(0xFFF2FFEB),
       body: CustomScrollView(
         slivers: [
-          /*SliverAppBar(
-              backgroundColor: const Color(0xFFA7CF9B),
-              title: !_searchBoolean
-                  ? Text(
-                      'Медведи',
-                      style: TextStyle(color: Color(0xFAFAFAFF)),
-                    )
-                  : TextField(
-                      controller: searchController,
-                      decoration: InputDecoration(
-                          hintText: "Поиск...",
-                          hintStyle: TextStyle(color: Color(0xFAFAFAFF)),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFAFAFAFF))),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Color(0xFAFAFAFF)))),
-                      onChanged: (text) async {
-                        await _search(text);
-                      },
-                    ),
-              centerTitle: true,
-              leading: IconButton(
-                  onPressed: () => {},
-                  icon: Transform.flip(
-                      flipX: true,
-                      child: SvgPicture.asset(
-                        'icons/Marker.svg',
-                        color: const Color(0xFAFAFAFF),
-                        height: 30,
-                      ))),
-              actions: !_searchBoolean
-                  ? [
-                      IconButton(
-                          iconSize: 30,
-                          icon: Icon(
-                            Icons.search,
-                            color: Color(0xFAFAFAFF),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _searchBoolean = true;
-                            });
-                          })
-                    ]
-                  : [
-                      IconButton(
-                          icon: Icon(
-                            Icons.clear,
-                            color: Color(0xFAFAFAFF),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _searchBoolean = false;
-                              searchController.clear();
-                              _refreshJournals();
-                            });
-                          })
-                    ]),*/
           SliverPersistentHeader(
               floating: true,
-              delegate: _SliverAppBarDelegate(SizedBox(
-                height: 80,
-                child: Container(
-                    color: Color(0xFFF2FFEB),
-                    child: Center(
-                        child: ToggleSwitch(
-                      minWidth: 50,
-                      minHeight: 50,
-                      initialLabelIndex: 0,
-                      cornerRadius: 20,
-                      activeFgColor: Colors.white,
-                      inactiveBgColor: Colors.grey,
-                      inactiveFgColor: Colors.white,
-                      totalSwitches: 2,
-                      icons: [Icons.check, Icons.cancel],
-                      iconSize: 30,
-                      onToggle: (index) {
-                        if (index == 0)
-                          _bigCard = false;
-                        else
-                          _bigCard = true;
-                        print('bigCard: $_bigCard');
-                        _refreshJournals();
-                      },
-                    ))),
-              ))),
+              delegate: _SliverAppBarDelegate(
+                  minHeight: 60,
+                  maxHeight: 150,
+                  child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Column(children: [
+                        AppBar(
+                            backgroundColor: const Color(0xFFA7CF9B),
+                            title: !_searchBoolean
+                                ? Text(
+                                    'Медведи',
+                                    style: TextStyle(color: Color(0xFAFAFAFF)),
+                                  )
+                                : TextField(
+                                    controller: searchController,
+                                    decoration: InputDecoration(
+                                        hintText: "Поиск...",
+                                        hintStyle:
+                                            TextStyle(color: Color(0xFAFAFAFF)),
+                                        enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color(0xFAFAFAFF))),
+                                        focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color(0xFAFAFAFF)))),
+                                    onChanged: (text) async {
+                                      await _search(text);
+                                    },
+                                  ),
+                            centerTitle: true,
+                            leading: IconButton(
+                                onPressed: () => {},
+                                icon: Transform.flip(
+                                    flipX: true,
+                                    child: SvgPicture.asset(
+                                      'icons/Marker.svg',
+                                      color: const Color(0xFAFAFAFF),
+                                      height: 30,
+                                    ))),
+                            actions: !_searchBoolean
+                                ? [
+                                    IconButton(
+                                        iconSize: 30,
+                                        icon: Icon(
+                                          Icons.search,
+                                          color: Color(0xFAFAFAFF),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _searchBoolean = true;
+                                          });
+                                        })
+                                  ]
+                                : [
+                                    IconButton(
+                                        icon: Icon(
+                                          Icons.clear,
+                                          color: Color(0xFAFAFAFF),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _searchBoolean = false;
+                                            searchController.clear();
+                                            _refreshJournals();
+                                          });
+                                        })
+                                  ]),
+                        Container(
+                            color: Color(0xFFF2FFEB),
+                            child: Center(
+                                child: ToggleSwitch(
+                              minWidth: 50,
+                              minHeight: 50,
+                              initialLabelIndex: toggle_bigCard,
+                              cornerRadius: 20,
+                              activeFgColor: Colors.white,
+                              inactiveBgColor: Colors.grey,
+                              inactiveFgColor: Colors.white,
+                              totalSwitches: 2,
+                              icons: [Icons.check, Icons.cancel],
+                              iconSize: 30,
+                              onToggle: (index) {
+                                if (index == 0) {
+                                  _bigCard = false;
+                                  toggle_bigCard = 0;
+                                } else {
+                                  _bigCard = true;
+                                  toggle_bigCard = 1;
+                                }
+                                print('bigCard: $_bigCard');
+                                _refreshJournals();
+                              },
+                            ))),
+                      ])))),
           !_bigCard
               ? SliverGrid.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -529,23 +539,31 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._widget);
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
 
-  final SizedBox _widget;
+  _SliverAppBarDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
 
   @override
-  double get minExtent => _widget.height ?? 0.0;
+  double get minExtent => minHeight;
   @override
-  double get maxExtent => _widget.height ?? 0.0;
+  double get maxExtent => maxHeight;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return _widget;
+    return SizedBox.expand(child: child);
   }
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }
