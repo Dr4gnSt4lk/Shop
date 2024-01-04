@@ -519,13 +519,42 @@ class _HomePageState extends State<HomePage> {
                           ))),
                 )
               : SliverList.builder(
-                  itemCount: 30,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: Icon(Icons.list),
-                      title: Text('Item ${index + 1}'),
-                    );
-                  })
+                  itemCount: _journals.length,
+                  itemBuilder: (context, index) => InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: const EdgeInsets.only(left:10,right:10,bottom:5),
+                      decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color(0xFFA7CF9B),
+                          ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(9, 28, 9, 0),
+                                child: Row ()
+                                child: Container(
+                                    height: 175,
+                                    width: 145,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: const Color(0xFF567B59),
+                                            width: 3),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: _journals[index]['image'] != null
+                                        ? Image.memory(
+                                            _journals[index]['image'],
+                                            fit: BoxFit.fitHeight,
+                                          )
+                                        : Container()),
+                              ),
+                            ],
+                          ),
+                    )
+                  ))
+                //Большая Карточка
         ],
       ),
       floatingActionButton: FloatingActionButton(
