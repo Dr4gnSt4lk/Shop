@@ -521,42 +521,92 @@ class _HomePageState extends State<HomePage> {
               : SliverList.builder(
                   itemCount: _journals.length,
                   itemBuilder: (context, index) => InkWell(
-                    onTap: () {},
-                    child: Container(
-                      margin: const EdgeInsets.only(left:10,right:10,bottom:5),
-                      decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: const Color(0xFFA7CF9B),
-                          ),
-                          child: Column(
-                            children: [
+                      onTap: () {},
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFA7CF9B),
+                        ),
+                        child: Column(children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.fromLTRB(9, 28, 9, 0),
-                                child: Row ()
-                                child: Container(
-                                    height: 175,
-                                    width: 145,
+                                  padding: EdgeInsets.fromLTRB(12, 20, 9, 0),
+                                  child: Container(
+                                      height: 145,
+                                      width: 125,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(
+                                              color: const Color(0xFF567B59),
+                                              width: 3),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: _journals[index]['image'] != null
+                                          ? Image.memory(
+                                              _journals[index]['image'],
+                                              fit: BoxFit.fitHeight,
+                                            )
+                                          : Container())),
+                              Flexible(
+                                  child: Column(
+                                children: [
+                                  Container(
+                                      height: 50,
+                                      width: 200,
+                                      /*    decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xFF567B59),
+                                              width: 3)),  */
+                                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                      child: Text(
+                                        _journals[index]['title'],
+                                        style: TextStyle(
+                                            fontSize: 21,
+                                            color: Color(0xFAFAFAFF)),
+                                      )),
+                                  Container(
+                                      height: 100,
+                                      width: 200,
+                                      /*       decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xFF567B59),
+                                              width: 3)),         */
+                                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: Text(
+                                        _journals[index]['description'],
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xFAFAFAFF)),
+                                      )),
+                                ],
+                              )),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    height: 60,
+                                    width: 60,
                                     decoration: BoxDecoration(
-                                        color: Colors.white,
                                         border: Border.all(
                                             color: const Color(0xFF567B59),
-                                            width: 3),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: _journals[index]['image'] != null
-                                        ? Image.memory(
-                                            _journals[index]['image'],
-                                            fit: BoxFit.fitHeight,
-                                          )
-                                        : Container()),
-                              ),
+                                            width: 3)),
+                                  ),
+                                ],
+                              )
                             ],
-                          ),
-                    )
-                  ))
-                //Большая Карточка
+                          )
+                        ]),
+                      )))
         ],
       ),
+      //Большая Карточка
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFFA7CF9B),
         focusColor: Color(0xFF567B59),
