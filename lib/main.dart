@@ -272,153 +272,340 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF2FFEB),
-      body: CustomScrollView(
-        slivers: [
-          SliverPersistentHeader(
-              floating: true,
-              delegate: _SliverAppBarDelegate(
-                  minHeight: 60,
-                  maxHeight: 150,
-                  child: SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Column(children: [
-                        AppBar(
-                            backgroundColor: const Color(0xFFA7CF9B),
-                            title: !_searchBoolean
-                                ? Text(
-                                    'Медведи',
-                                    style: TextStyle(color: Color(0xFAFAFAFF)),
-                                  )
-                                : TextField(
-                                    controller: searchController,
-                                    decoration: InputDecoration(
-                                        hintText: "Поиск...",
-                                        hintStyle:
-                                            TextStyle(color: Color(0xFAFAFAFF)),
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Color(0xFAFAFAFF))),
-                                        focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Color(0xFAFAFAFF)))),
-                                    onChanged: (text) async {
-                                      await _search(text);
-                                    },
-                                  ),
-                            centerTitle: true,
-                            leading: IconButton(
-                                onPressed: () => {},
-                                icon: Transform.flip(
-                                    flipX: true,
-                                    child: SvgPicture.asset(
-                                      'icons/Marker.svg',
-                                      color: const Color(0xFAFAFAFF),
-                                      height: 30,
-                                    ))),
-                            actions: !_searchBoolean
-                                ? [
-                                    IconButton(
-                                        iconSize: 30,
-                                        icon: Icon(
-                                          Icons.search,
-                                          color: Color(0xFAFAFAFF),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _searchBoolean = true;
-                                          });
-                                        })
-                                  ]
-                                : [
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.clear,
-                                          color: Color(0xFAFAFAFF),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _searchBoolean = false;
-                                            searchController.clear();
-                                            _refreshJournals();
-                                          });
-                                        })
-                                  ]),
-                        Container(
-                            color: Color(0xFFF2FFEB),
-                            child: Center(
-                                child: ToggleSwitch(
-                              minWidth: 50,
-                              minHeight: 50,
-                              initialLabelIndex: toggle_bigCard,
-                              cornerRadius: 20,
-                              activeFgColor: Colors.white,
-                              inactiveBgColor: Colors.grey,
-                              inactiveFgColor: Colors.white,
-                              totalSwitches: 2,
-                              icons: [Icons.check, Icons.cancel],
-                              iconSize: 30,
-                              onToggle: (index) {
-                                if (index == 0) {
-                                  _bigCard = false;
-                                  toggle_bigCard = 0;
-                                } else {
-                                  _bigCard = true;
-                                  toggle_bigCard = 1;
-                                }
-                                print('bigCard: $_bigCard');
-                                _refreshJournals();
-                              },
-                            ))),
-                      ])))),
-          !_bigCard
-              ? SliverGrid.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, childAspectRatio: 0.64),
-                  itemCount: _journals.length,
-                  itemBuilder: (context, index) => InkWell(
-                      onTap: () {},
-                      child: Container(
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: const Color(0xFFA7CF9B),
-                          ),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(9, 7, 9, 2),
-                                child: Container(
-                                    height: 145,
-                                    width: 175,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(
-                                            color: const Color(0xFF567B59),
-                                            width: 3),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: _journals[index]['image'] != null
-                                        ? Image.memory(
-                                            _journals[index]['image'],
-                                            fit: BoxFit.fitHeight,
-                                          )
-                                        : Container()),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.fromLTRB(9, 1, 9, 25),
-                                  child: Text(_journals[index]['title'],
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color(0xFAFAFAFF)),
-                                      textAlign: TextAlign.center)),
-                              Padding(
-                                  padding: EdgeInsets.fromLTRB(11, 0, 11, 0),
-                                  child: Container(
+      body: CustomScrollView(slivers: [
+        SliverPersistentHeader(
+            floating: true,
+            delegate: _SliverAppBarDelegate(
+                minHeight: 60,
+                maxHeight: 150,
+                child: SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Column(children: [
+                      AppBar(
+                          backgroundColor: const Color(0xFFA7CF9B),
+                          title: !_searchBoolean
+                              ? Text(
+                                  'Медведи',
+                                  style: TextStyle(color: Color(0xFAFAFAFF)),
+                                )
+                              : TextField(
+                                  controller: searchController,
+                                  decoration: InputDecoration(
+                                      hintText: "Поиск...",
+                                      hintStyle:
+                                          TextStyle(color: Color(0xFAFAFAFF)),
+                                      enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xFAFAFAFF))),
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Color(0xFAFAFAFF)))),
+                                  onChanged: (text) async {
+                                    await _search(text);
+                                  },
+                                ),
+                          centerTitle: true,
+                          leading: IconButton(
+                              onPressed: () => {},
+                              icon: Transform.flip(
+                                  flipX: true,
+                                  child: SvgPicture.asset(
+                                    'icons/Marker.svg',
+                                    color: const Color(0xFAFAFAFF),
                                     height: 30,
+                                  ))),
+                          actions: !_searchBoolean
+                              ? [
+                                  IconButton(
+                                      iconSize: 30,
+                                      icon: Icon(
+                                        Icons.search,
+                                        color: Color(0xFAFAFAFF),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _searchBoolean = true;
+                                        });
+                                      })
+                                ]
+                              : [
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.clear,
+                                        color: Color(0xFAFAFAFF),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _searchBoolean = false;
+                                          searchController.clear();
+                                          _refreshJournals();
+                                        });
+                                      })
+                                ]),
+                      Container(
+                          color: Color(0xFFF2FFEB),
+                          child: Center(
+                              child: ToggleSwitch(
+                            minWidth: 50,
+                            minHeight: 50,
+                            initialLabelIndex: toggle_bigCard,
+                            cornerRadius: 20,
+                            activeFgColor: Colors.white,
+                            inactiveBgColor: Colors.grey,
+                            inactiveFgColor: Colors.white,
+                            totalSwitches: 2,
+                            icons: [Icons.check, Icons.cancel],
+                            iconSize: 30,
+                            onToggle: (index) {
+                              if (index == 0) {
+                                _bigCard = false;
+                                toggle_bigCard = 0;
+                              } else {
+                                _bigCard = true;
+                                toggle_bigCard = 1;
+                              }
+                              print('bigCard: $_bigCard');
+                              _refreshJournals();
+                            },
+                          ))),
+                    ])))),
+        !_bigCard
+            ? SliverGrid.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: 0.64),
+                itemCount: _journals.length,
+                itemBuilder: (context, index) => InkWell(
+                    onTap: () {},
+                    child: Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFA7CF9B),
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(9, 7, 9, 2),
+                              child: Container(
+                                  height: 145,
+                                  width: 175,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: const Color(0xFF567B59),
+                                          width: 3),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: _journals[index]['image'] != null
+                                      ? Image.memory(
+                                          _journals[index]['image'],
+                                          fit: BoxFit.fitHeight,
+                                        )
+                                      : Container()),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.fromLTRB(9, 1, 9, 25),
+                                child: Text(_journals[index]['title'],
+                                    style: TextStyle(
+                                        fontSize: 16, color: Color(0xFAFAFAFF)),
+                                    textAlign: TextAlign.center)),
+                            Padding(
+                                padding: EdgeInsets.fromLTRB(11, 0, 11, 0),
+                                child: Container(
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xFF567B59),
+                                          width: 2)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(left: 4, right: 10),
+                                        child: Row(children: <Widget>[
+                                          SvgPicture.asset('icons/Rating.svg',
+                                              width: 30, height: 25),
+                                          SvgPicture.asset('icons/Rating.svg',
+                                              width: 30, height: 25),
+                                          SvgPicture.asset('icons/Rating.svg',
+                                              width: 30, height: 25),
+                                          SvgPicture.asset('icons/Rating.svg',
+                                              width: 30, height: 25),
+                                          SvgPicture.asset('icons/Rating.svg',
+                                              width: 30, height: 25)
+                                        ]),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(right: 15),
+                                        child: Text(
+                                          _journals[index]['rating']
+                                              .round()
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xFAFAFAFF)),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                            Container(
+                                margin: EdgeInsets.only(
+                                    left: 10, right: 10, top: 8),
+                                height: 53,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFF2FFEB),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Flexible(
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                            Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 7, top: 3),
+                                                child: FittedBox(
+                                                    fit: BoxFit.fitWidth,
+                                                    child: Text(
+                                                      _journals[index]['price']
+                                                              .toString() +
+                                                          '₽',
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Color(
+                                                              0xFF567B59)),
+                                                    ))),
+                                            Container(
+                                              padding: EdgeInsets.only(left: 6),
+                                              child: FittedBox(
+                                                fit: BoxFit.fitWidth,
+                                                child: Text(
+                                                    'От ' +
+                                                        (_journals[index]
+                                                                    ['price'] /
+                                                                12)
+                                                            .round()
+                                                            .toString() +
+                                                        '₽/ в мес.',
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color:
+                                                            Color(0xFF567B59))),
+                                              ),
+                                            )
+                                          ])),
+                                      Container(
+                                          child: IconButton(
+                                              iconSize: 30,
+                                              icon: Icon(
+                                                Icons.info,
+                                                color: Color(0xFFA7CF9B),
+                                              ),
+                                              onPressed: () {}))
+                                    ]))
+                          ],
+                        ))),
+              )
+            : SliverList.builder(
+                itemCount: _journals.length,
+                itemBuilder: (context, index) => InkWell(
+                    onTap: () {},
+                    child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFA7CF9B),
+                        ),
+                        child: Column(children: [
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(12, 20, 9, 0),
+                                    child: Container(
+                                        height: 145,
+                                        width: 125,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: const Color(0xFF567B59),
+                                                width: 3),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: _journals[index]['image'] != null
+                                            ? Image.memory(
+                                                _journals[index]['image'],
+                                                fit: BoxFit.fitHeight,
+                                              )
+                                            : Container())),
+                                Flexible(
+                                    child: Column(
+                                  children: [
+                                    Container(
+                                        height: 50,
+                                        width: 200,
+                                        /*    decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xFF567B59),
+                                              width: 3)),  */
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                        child: Text(
+                                          _journals[index]['title'],
+                                          style: TextStyle(
+                                              fontSize: 21,
+                                              color: Color(0xFAFAFAFF)),
+                                        )),
+                                    Container(
+                                        height: 100,
+                                        width: 200,
+                                        /*       decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xFF567B59),
+                                              width: 3)),         */
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                        child: Text(
+                                          _journals[index]['description'],
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xFAFAFAFF)),
+                                        )),
+                                  ],
+                                ))
+                              ]),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(left: 15, top: 10),
+                                height: 42,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: const Color(0xFF567B59),
+                                        width: 2),
+                                    borderRadius: BorderRadius.circular(3)),
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(left: 15, top: 10),
+                                  child: Container(
+                                    height: 42,
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color: const Color(0xFF567B59),
-                                            width: 2)),
+                                            width: 2),
+                                        borderRadius: BorderRadius.circular(3)),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -452,82 +639,13 @@ class _HomePageState extends State<HomePage> {
                                         )
                                       ],
                                     ),
-                                  )),
-                              Container(
-                                  margin: EdgeInsets.only(
-                                      left: 10, right: 10, top: 8),
-                                  height: 53,
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFFF2FFEB),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Flexible(
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                              Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 7, top: 3),
-                                                  child: FittedBox(
-                                                      fit: BoxFit.fitWidth,
-                                                      child: Text(
-                                                        _journals[index]
-                                                                    ['price']
-                                                                .toString() +
-                                                            '₽',
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Color(
-                                                                0xFF567B59)),
-                                                      ))),
-                                              Container(
-                                                padding:
-                                                    EdgeInsets.only(left: 6),
-                                                child: FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                      'От ' +
-                                                          (_journals[index][
-                                                                      'price'] /
-                                                                  12)
-                                                              .round()
-                                                              .toString() +
-                                                          '₽/ в мес.',
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Color(
-                                                              0xFF567B59))),
-                                                ),
-                                              )
-                                            ])),
-                                        Container(
-                                            child: IconButton(
-                                                iconSize: 30,
-                                                icon: Icon(
-                                                  Icons.info,
-                                                  color: Color(0xFFA7CF9B),
-                                                ),
-                                                onPressed: () {}))
-                                      ]))
+                                  ))
                             ],
-                          ))),
-                )
-              : SliverList.builder(
-                  itemCount: 30,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: Icon(Icons.list),
-                      title: Text('Item ${index + 1}'),
-                    );
-                  })
-        ],
-      ),
+                          )
+                        ]))))
+      ]),
+      //Большая Карточка
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFFA7CF9B),
         focusColor: Color(0xFF567B59),
