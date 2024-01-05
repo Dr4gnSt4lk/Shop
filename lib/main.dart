@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage> {
   bool _isLoading = true;
   bool _searchBoolean = false;
   bool _bigCard = false;
+  bool? isChecked = false;
   int toggle_bigCard = 0;
 
   void _refreshJournals() async {
@@ -588,15 +589,46 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.only(left: 15, top: 10),
-                                height: 42,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(0xFF567B59),
-                                        width: 2),
-                                    borderRadius: BorderRadius.circular(3)),
-                              ),
+                                  margin: EdgeInsets.only(left: 15, top: 10),
+                                  height: 42,
+                                  width: 110,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color(0xFF567B59),
+                                          width: 2),
+                                      borderRadius: BorderRadius.circular(3)),
+                                  child: Flexible(
+                                      child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                          height: 30,
+                                          width: 30,
+                                          // decoration: BoxDecoration(
+                                          //     border: Border.all(
+                                          //         color:
+                                          //             const Color(0xFF567B59),
+                                          //         width: 3)),
+                                          child: Checkbox(
+                                              value: isChecked,
+                                              checkColor: Color(0xFAFAFAFF),
+                                              side: const BorderSide(
+                                                  width: 1.7,
+                                                  color: Color(0xFAFAFAFF)),
+                                              onChanged: (newBool) {
+                                                setState(() {
+                                                  //ЗАЛУПА С БУЛЛАМИ ПАМАГИТИИИИ!!!!!
+                                                  isChecked = newBool;
+                                                });
+                                              })),
+                                      Flexible(
+                                        child: Text('Сравнить',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFAFAFAFF))),
+                                      )
+                                    ],
+                                  ))),
                               Container(
                                   margin: EdgeInsets.only(left: 15, top: 10),
                                   child: Container(
@@ -641,7 +673,92 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ))
                             ],
-                          )
+                          ),
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                    margin: EdgeInsets.only(left: 15, top: 10),
+                                    height: 50,
+                                    width: 190,
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFFF2FFEB),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Flexible(
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 7, top: 3),
+                                                    child: FittedBox(
+                                                        fit: BoxFit.fitWidth,
+                                                        child: Text(
+                                                          _journals[index]
+                                                                      ['price']
+                                                                  .toString() +
+                                                              '₽',
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Color(
+                                                                  0xFF567B59)),
+                                                        ))),
+                                                Container(
+                                                  padding:
+                                                      EdgeInsets.only(left: 6),
+                                                  child: FittedBox(
+                                                    fit: BoxFit.fitWidth,
+                                                    child: Text(
+                                                        'От ' +
+                                                            (_journals[index][
+                                                                        'price'] /
+                                                                    12)
+                                                                .round()
+                                                                .toString() +
+                                                            '₽/ в мес.',
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            color: Color(
+                                                                0xFF567B59))),
+                                                  ),
+                                                )
+                                              ])),
+                                          Container(
+                                              child: IconButton(
+                                                  iconSize: 30,
+                                                  icon: Icon(
+                                                    Icons.info,
+                                                    color: Color(0xFFA7CF9B),
+                                                  ),
+                                                  onPressed: () {}))
+                                        ])),
+                                Container(
+                                  margin: EdgeInsets.only(left: 8, top: 10),
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFFF2FFEB),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: IconButton(
+                                    padding: EdgeInsets.all(1),
+                                    iconSize: 50,
+                                    icon: Icon(
+                                      Icons.favorite_outline_sharp,
+                                      color: Color(0xFF567B59),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                )
+                              ])
                         ]))))
       ]),
       //Большая Карточка
