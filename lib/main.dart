@@ -757,8 +757,98 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     onPressed: () {},
                                   ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 8, top: 10),
+                                  height: 50,
+                                  width: 86,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xFF567B59),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text('Купить',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFAFAFAFF))),
+                                  padding: EdgeInsets.fromLTRB(5, 10, 0, 10),
                                 )
-                              ])
+                              ]),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Flexible(
+                                  child: Column(
+                                children: [
+                                  Container(
+                                      height: 30,
+                                      width: 170,
+                                      margin: EdgeInsets.fromLTRB(25, 20, 0, 0),
+                                      // decoration: BoxDecoration(
+                                      //     border: Border.all(
+                                      //         color: const Color(0xFF567B59),
+                                      //         width: 3)),
+                                      child: Text(
+                                        'В наличии:',
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFAFAFAFF)),
+                                      )),
+                                  Container(
+                                      height: 30,
+                                      width: 170,
+                                      // decoration: BoxDecoration(
+                                      //     border: Border.all(
+                                      //         color: const Color(0xFF567B59),
+                                      //         width: 3)),
+                                      margin: EdgeInsets.fromLTRB(25, 0, 0, 0),
+                                      child: Text(
+                                        'в 8 магазинах',
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFAFAFAFF)),
+                                      )),
+                                ],
+                              )),
+                              Flexible(
+                                  child: Column(
+                                children: [
+                                  Container(
+                                      height: 30,
+                                      width: 170,
+                                      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                      // decoration: BoxDecoration(
+                                      //     border: Border.all(
+                                      //         color: const Color(0xFF567B59),
+                                      //         width: 3)),
+                                      child: Text(
+                                        'Доставим на дом:',
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFAFAFAFF)),
+                                      )),
+                                  Container(
+                                      height: 30,
+                                      width: 170,
+                                      // decoration: BoxDecoration(
+                                      //     border: Border.all(
+                                      //         color: const Color(0xFF567B59),
+                                      //         width: 3)),
+                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: Text(
+                                        'Послезавтра',
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFAFAFAFF)),
+                                      )),
+                                ],
+                              ))
+                            ],
+                          )
                         ]))))
       ]),
       //Большая Карточка
