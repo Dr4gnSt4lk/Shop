@@ -837,7 +837,7 @@ class _HomePageState extends State<HomePage> {
                                       //     border: Border.all(
                                       //         color: const Color(0xFF567B59),
                                       //         width: 3)),
-                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                       child: Text(
                                         'Послезавтра',
                                         style: TextStyle(
