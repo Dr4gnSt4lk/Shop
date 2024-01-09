@@ -758,20 +758,24 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () {},
                                   ),
                                 ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 8, top: 10),
-                                  height: 50,
-                                  width: 86,
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xFF567B59),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Text('Купить',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFAFAFAFF))),
-                                  padding: EdgeInsets.fromLTRB(5, 10, 0, 10),
-                                )
+                                InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 8, top: 10),
+                                      height: 50,
+                                      width: 86,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFF567B59),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Text('Купить',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFAFAFAFF))),
+                                      padding:
+                                          EdgeInsets.fromLTRB(5, 10, 0, 10),
+                                    ))
                               ]),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
